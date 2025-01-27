@@ -2,7 +2,7 @@
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "description": "Média do valor de mercado por idade dos jogadores.",
     "width": 450, 
-    "height": 200,
+    "height": 400,
     "data": {
       "url": "players_22.csv",
       "format": {
