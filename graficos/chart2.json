@@ -1,0 +1,83 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Top 10 Jogadores com Maior Overall",
+    "width": 350,
+    "height": 250,
+    "data": {
+      "url": "players_22.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    "transform": [
+      {
+        "filter": "datum.overall > 0"
+      },
+      {
+        "window": [
+          {
+            "op": "rank",
+            "as": "rank"
+          }
+        ],
+        "sort": [
+          {
+            "field": "overall",
+            "order": "descending"
+          }
+        ]
+      },
+      {
+        "filter": "datum.rank <= 10"
+      }
+    ],
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "overall",
+        "type": "quantitative",
+        "title": "Overall",
+        "axis": {
+          "format": ".1f"
+        }
+      },
+      "y": {
+        "field": "short_name",
+        "type": "nominal",
+        "title": "Jogador",
+        "sort": {
+          "field": "overall",
+          "order": "descending"
+        },
+        "axis": {
+          "labelAngle": 45
+        }
+      },
+      "color": {
+        "field": "short_name",
+        "type": "nominal",
+        "legend": {
+          "title": "Jogador"
+        }
+      },
+      "tooltip": [
+        {
+          "field": "short_name",
+          "type": "nominal",
+          "title": "Jogador"
+        },
+        {
+          "field": "overall",
+          "type": "quantitative",
+          "title": "Overall",
+          "format": ".1f"
+        }
+      ]
+    },
+    "title": {
+      "text": "Jogadores com Maior Overall",
+      "anchor": "start",
+      "fontSize": 16
+    }
+  }
+  

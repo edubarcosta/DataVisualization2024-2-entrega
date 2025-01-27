@@ -1,0 +1,88 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Top 10 Jogadores com Maior Overall",
+    "width": 400,
+    "height": 200,
+    "data": {
+      "url": "players_22.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    "transform": [
+      {
+        "filter": "datum.overall > 0"
+      },
+      {
+        "aggregate": [
+          {
+            "op": "mean",
+            "field": "overall",
+            "as": "mean_overall"
+          }
+        ],
+        "groupby": ["nationality_name"]
+      },
+      {
+        "window": [
+          {
+            "op": "rank",
+            "as": "rank"
+          }
+        ]
+      },
+      {
+        "filter": "datum.rank <= 10"
+      }
+    ],
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "mean_overall",
+        "type": "quantitative",
+        "title": "Média do Overall",
+        "axis": {
+          "format": ".1f"
+        }
+      },
+      "y": {
+        "field": "nationality_name",
+        "type": "nominal",
+        "title": "País",
+        "sort": {
+          "field": "mean_overall",
+          "op": "mean",
+          "order": "descending"
+        },
+        "axis": {
+          "labelAngle": 45
+        }
+      },
+      "color": {
+        "field": "nationality_name",
+        "type": "nominal",
+        "legend": {
+          "title": "País"
+        }
+      },
+      "tooltip": [
+        {
+          "field": "nationality_name",
+          "type": "nominal",
+          "title": "País"
+        },
+        {
+          "field": "mean_overall",
+          "type": "quantitative",
+          "title": "Média do Overall",
+          "format": ".1f"
+        }
+      ]
+    },
+    "title": {
+      "text": "Jogadores com Maior Valor de Mercado",
+      "anchor": "start",
+      "fontSize": 16
+    }
+  }
+  
