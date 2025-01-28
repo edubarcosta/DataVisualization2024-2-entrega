@@ -1,17 +1,17 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "description": "Relação entre Valor de Mercado e Overall dos Jogadores",
-    "width": 750, 
+    "width": 750,
     "height": 250,
     "data": {
-      "url": "players_22.csv",  
+      "url": "players_22.csv",
       "format": {
         "type": "csv"
       }
     },
     "transform": [
       {
-        "filter": "datum.value_eur > 0 && datum.overall > 0 && datum.league_name == 'English Premier League'"  
+        "filter": "datum.value_eur > 0 && datum.overall > 0 && (datum.club_name == 'Real Madrid CF' || datum.club_name == 'FC Barcelona')"
       }
     ],
     "mark": "point",
@@ -27,23 +27,31 @@
         },
         "scale": {
           "type": "log",
-          "domain": [50000, 150000000]  
+          "domain": [400000, 150000000]
         }
       },
       "y": {
         "field": "overall",
         "type": "quantitative",
-        "title": "Overall do Jogador"
+        "title": "Overall do Jogador",
+        "scale": {
+            "type": "log",
+            "domain": [50, 95]
+          }
       },
       "size": {
-        "field": "age",  
+        "field": "age",
         "type": "quantitative",
         "legend": {
           "title": "Idade"
+        },
+        "scale": {
+          "domain": [17, 39],
+          "range": [50, 500]
         }
       },
       "color": {
-        "field": "club_name",  
+        "field": "club_name",
         "type": "nominal",
         "legend": {
           "title": "Times"
@@ -65,11 +73,16 @@
           "field": "overall",
           "type": "quantitative",
           "title": "Overall"
+        },
+        {
+          "field": "age",
+          "type": "quantitative",
+          "title": "Idade"
         }
       ]
     },
     "title": {
-      "text": "Relação entre Valor de Mercado e Overall dos Jogadores (Premier League)",
+      "text": "Relação entre Valor de Mercado, Overall e Idade dos Jogadores do Real Madrid e Barcelona",
       "fontSize": 16,
       "anchor": "start"
     }

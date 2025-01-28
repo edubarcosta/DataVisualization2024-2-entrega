@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Gráfico de barras mostrando as 5 posições com maior média de overall.",
+  "description": "Gráfico de barras mostrando as 8 posições com maior média de overall.",
   "width": 400, 
   "height": 250,
   "data": {
@@ -9,10 +9,14 @@
   },
   "transform": [
     {
+      "calculate": "split(datum.player_positions, ',')[0]",
+      "as": "main_position"
+    },
+    {
       "aggregate": [
         {"op": "mean", "field": "overall", "as": "avg_overall"}
       ],
-      "groupby": ["club_position"]
+      "groupby": ["main_position"]
     },
     {
       "window": [
@@ -27,7 +31,7 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "field": "club_position",
+      "field": "main_position",
       "type": "nominal",
       "title": "Posição",
       "sort": "-y"
@@ -38,13 +42,13 @@
       "title": "Média de Overall"
     },
     "color": {
-      "field": "club_position",
+      "field": "main_position",
       "type": "nominal",
       "legend": null
     },
     "tooltip": [
       {
-        "field": "club_position",
+        "field": "main_position",
         "type": "nominal",
         "title": "Posição"
       },

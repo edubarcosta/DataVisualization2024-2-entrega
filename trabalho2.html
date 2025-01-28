@@ -55,7 +55,8 @@
   </style>
 </head>
 <body>
-  
+  <h2>Trabalho 2</h2>
+  <h3>Thiago Melo & Eduardo Barros</h3>
   <div class="section">
     <div class="section-title">Análise de Desempenho e Habilidades</div>
     <div class="charts">
@@ -100,7 +101,8 @@
     </div>
     <div class="chart-break">
       <div id="chart11" class="chart1"></div>
-
+      <div class="chart-break">
+        <div id="chart12" class="chart1"></div>
   </div>
 
   <script>
@@ -147,6 +149,10 @@
     fetch('graficos/chart11.json')
     .then(response => response.json())
     .then(spec => vegaEmbed('#chart11', spec).catch(console.error));
+
+    fetch('graficos/chart12.json')
+    .then(response => response.json())
+    .then(spec => vegaEmbed('#chart12', spec).catch(console.error));
   </script>
 
 </body>
