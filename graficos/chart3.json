@@ -1,0 +1,89 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Mapa de Calor das 15 Ligas com Maior Média de Overall",
+  "width": 350, 
+  "height": 300,
+  "data": {
+    "url": "players_22.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.overall > 0"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "mean",
+          "field": "overall",
+          "as": "mean_overall"
+        }
+      ],
+      "groupby": ["league_name"]
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ]
+    },
+    {
+      "filter": "datum.rank <= 15"
+    }
+  ],
+  "mark": "rect",
+  "encoding": {
+    "x": {
+      "field": "mean_overall",
+      "type": "quantitative",
+      "title": "Média de Overall"
+    },
+    "y": {
+      "field": "league_name",
+      "type": "nominal",
+      "title": "Liga",
+      "sort": {
+        "field": "mean_overall",
+        "order": "descending"
+      }
+    },
+    "color": {
+      "field": "mean_overall",
+      "type": "quantitative",
+      "legend": {
+        "title": "Média de Overall"
+      },
+      "scale": {
+        "scheme": "greens"
+      }
+    },
+    "tooltip": [
+      {
+        "field": "league_name",
+        "type": "nominal",
+        "title": "Liga"
+      },
+      {
+        "field": "mean_overall",
+        "type": "quantitative",
+        "title": "Média de Overall",
+        "format": ".1f"
+      }
+    ]
+  },
+  "title": {
+    "text": "Ligas com Maior Média de Overall",
+    "anchor": "start",
+    "fontSize": 16,
+    "fontWeight": "bold"
+  },
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    }
+  }
+}

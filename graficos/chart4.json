@@ -1,0 +1,65 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Média do valor de mercado por idade dos jogadores.",
+    "width": 450, 
+    "height": 300,
+    "data": {
+      "url": "players_22.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    "transform": [
+      {
+        "filter": "datum.value_eur > 0" 
+      },
+      {
+        "aggregate": [
+          {
+            "op": "mean",
+            "field": "value_eur",
+            "as": "mean_value_eur"
+          }
+        ],
+        "groupby": ["age"]
+      }
+    ],
+    "mark": "line",
+    "encoding": {
+      "x": {
+        "field": "age",
+        "type": "quantitative",
+        "title": "Idade",
+        "axis": {
+          "tickCount": 10
+        }
+      },
+      "y": {
+        "field": "mean_value_eur",
+        "type": "quantitative",
+        "title": "Valor de Mercado Médio (€)",
+        "axis": {
+          "format": "~s"
+        }
+      },
+      "tooltip": [
+        {
+          "field": "age",
+          "type": "quantitative",
+          "title": "Idade"
+        },
+        {
+          "field": "mean_value_eur",
+          "type": "quantitative",
+          "title": "Valor Médio (€)",
+          "format": ".2s"
+        }
+      ]
+    },
+    "title": {
+      "text": "Influência da Idade no Valor de Mercado",
+      "anchor": "start",
+      "fontSize": 16
+    }
+  }
+  

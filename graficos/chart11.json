@@ -1,0 +1,78 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Análise de Desempenho e Habilidades Técnicas dos Jogadores por Posição e Liga.",
+    "data": {
+      "url": "players_22.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    "transform": [
+      {
+        "filter": "datum.dribbling > 0 && datum.defending > 0 && datum.passing > 0"
+      },
+      {
+        "filter": "datum.league_name == 'Argentina Primera División' || datum.league_name == 'Chinese Super League' || datum.league_name == 'Colombian Liga Postobón' || datum.league_name == 'Spain Primera Division'"
+      }
+    ],
+    "facet": {
+      "field": "league_name",
+      "type": "nominal",
+      "title": "Ligas Nacionais"
+    },
+    "spec": {
+      "mark": "circle",
+      "encoding": {
+        "x": {
+          "field": "dribbling",
+          "type": "quantitative",
+          "title": "Drible (Dribbling)"
+        },
+        "y": {
+          "field": "defending",
+          "type": "quantitative",
+          "title": "Defesa (Defending)"
+        },
+        "size": {
+          "field": "dribbling",
+          "type": "quantitative",
+          "title": "Drible (Dribbling)",
+          "scale": {
+            "type": "sqrt",
+            "range": [1, 110] 
+          }
+        },
+        "color": {
+          "field": "player_positions",
+          "type": "nominal",
+          "legend": {
+            "title": "Posição"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "short_name",
+            "type": "nominal",
+            "title": "Jogador"
+          },
+          {
+            "field": "dribbling",
+            "type": "quantitative",
+            "title": "Habilidade de Drible"
+          },
+          {
+            "field": "defending",
+            "type": "quantitative",
+            "title": "Habilidade de Defesa"
+          }
+          
+        ]
+      }
+    }
+    ,  "title": {
+        "text": "Distribuição do nivel de Drible e Defesa por Jogadores em cada Liga",
+        "anchor": "start",
+        "fontSize": 16
+      }
+  }
+  

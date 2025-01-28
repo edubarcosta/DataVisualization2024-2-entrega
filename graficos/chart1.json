@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Gráfico de barras mostrando as 5 posições com maior média de overall.",
+  "width": 400, 
+  "height": 250,
+  "data": {
+    "url": "players_22.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {"op": "mean", "field": "overall", "as": "avg_overall"}
+      ],
+      "groupby": ["club_position"]
+    },
+    {
+      "window": [
+        {"op": "rank", "as": "rank"}
+      ],
+      "sort": [{"field": "avg_overall", "order": "descending"}]
+    },
+    {
+      "filter": "datum.rank <= 8"
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "club_position",
+      "type": "nominal",
+      "title": "Posição",
+      "sort": "-y"
+    },
+    "y": {
+      "field": "avg_overall",
+      "type": "quantitative",
+      "title": "Média de Overall"
+    },
+    "color": {
+      "field": "club_position",
+      "type": "nominal",
+      "legend": null
+    },
+    "tooltip": [
+      {
+        "field": "club_position",
+        "type": "nominal",
+        "title": "Posição"
+      },
+      {
+        "field": "avg_overall",
+        "type": "quantitative",
+        "title": "Média de Overall",
+        "format": ".2f"
+      }
+    ]
+  },
+  "title": {
+    "text": "Média de Overall por Posição",
+    "anchor": "start",
+    "fontSize": 16
+  }
+}
