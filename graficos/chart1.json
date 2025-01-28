@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Gráfico de barras mostrando as 5 posições com maior média de overall.",
-  "width": 450, 
+  "width": 400, 
   "height": 250,
   "data": {
     "url": "players_22.csv",

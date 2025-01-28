@@ -1,8 +1,8 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "description": "Relação entre Valor de Mercado e Overall dos Jogadores",
-    "width": 800,
-    "height": 400,
+    "width": 750, 
+    "height": 250,
     "data": {
       "url": "players_22.csv",  
       "format": {

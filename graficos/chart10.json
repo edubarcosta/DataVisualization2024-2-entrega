@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Valor de Mercado por Força Fisica",
+  "width": 500,
+  "height": 300,
+  "data": {
+    "url": "players_22.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "filter": "datum.value_eur > 0"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "mean",
+          "field": "value_eur",
+          "as": "mean_value"
+        }
+      ],
+      "groupby": ["physic"]
+    }
+  ],
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "field": "physic",
+      "type": "quantitative",
+      "title": "Fisico"
+    },
+    "y": {
+      "field": "mean_value",
+      "type": "quantitative",
+      "title": "Valor Médio de Mercado (€)",
+      "axis": {
+        "format": "~s"
+      }
+    },
+    "tooltip": [
+      {
+        "field": "physic",
+        "type": "quantitative",
+        "title": "Fisico"
+      },
+      {
+        "field": "mean_value",
+        "type": "quantitative",
+        "title": "Valor Médio (€)",
+        "format": ".2s"
+      }
+    ]
+  },
+  "title": {
+    "text": "Valor de Mercado Médio por Força Fisica",
+    "anchor": "start",
+    "fontSize": 16
+  }
+}

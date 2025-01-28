@@ -1,88 +1,104 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "description": "Top 10 Jogadores com Maior Overall",
-    "width": 400,
-    "height": 200,
     "data": {
       "url": "players_22.csv",
-      "format": {
-        "type": "csv"
-      }
+      "format": {"type": "csv"}
     },
     "transform": [
       {
-        "filter": "datum.overall > 0"
-      },
-      {
         "aggregate": [
-          {
-            "op": "mean",
-            "field": "overall",
-            "as": "mean_overall"
-          }
+          {"op": "mean", "field": "height_cm", "as": "mean_height"},
+          {"op": "mean", "field": "weight_kg", "as": "mean_weight"}
         ],
         "groupby": ["nationality_name"]
       },
+      {"filter": "datum.mean_height > 0 && datum.mean_weight > 0"},
       {
         "window": [
-          {
-            "op": "rank",
-            "as": "rank"
-          }
-        ]
+          {"op": "rank", "as": "rank", "field": "mean_height"}
+        ],
+        "sort": [{"field": "mean_height", "order": "descending"}]
+      },
+      {"filter": "datum.rank <= 15"}
+    ],
+    "hconcat": [
+      {
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "nationality_name",
+            "type": "nominal",
+            "sort": "-y",
+            "axis": {"title": "País"}
+          },
+          "y": {
+            "field": "mean_height",
+            "type": "quantitative",
+            "title": "Altura Média (cm)"
+          },
+          "color": {
+            "field": "mean_height",
+            "type": "quantitative",
+            "legend": {"title": "Altura Média"}
+          },
+          "tooltip": [
+            {"field": "nationality_name", "type": "nominal", "title": "País"},
+            {"field": "mean_height", "type": "quantitative", "title": "Altura Média (cm)"}
+          ]
+        },
+        "width": 425, 
+        "height": 250,
+        "title": {
+          "text": "Altura Média dos Jogadores por País",
+          "fontSize": 14,
+          "fontWeight": "bold",
+          "anchor": "start"
+        }
       },
       {
-        "filter": "datum.rank <= 10"
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "nationality_name",
+            "type": "nominal",
+            "sort": "-y",
+            "axis": {"title": "País"}
+          },
+          "y": {
+            "field": "mean_weight",
+            "type": "quantitative",
+            "title": "Peso Médio (kg)"
+          },
+          "color": {
+            "field": "mean_weight",
+            "type": "quantitative",
+            "legend": {"title": "Peso Médio"}
+          },
+          "tooltip": [
+            {"field": "nationality_name", "type": "nominal", "title": "País"},
+            {"field": "mean_weight", "type": "quantitative", "title": "Peso Médio (kg)"}
+          ]
+        },
+        "width": 425,
+        "height": 250,
+        "title": {
+          "text": "Peso Médio dos Jogadores por País",
+          "fontSize": 14,
+          "fontWeight": "bold",
+          "anchor": "start"
+        }
       }
     ],
-    "mark": "bar",
-    "encoding": {
-      "x": {
-        "field": "mean_overall",
-        "type": "quantitative",
-        "title": "Média do Overall",
-        "axis": {
-          "format": ".1f"
-        }
-      },
-      "y": {
-        "field": "nationality_name",
-        "type": "nominal",
-        "title": "País",
-        "sort": {
-          "field": "mean_overall",
-          "op": "mean",
-          "order": "descending"
-        },
-        "axis": {
-          "labelAngle": 45
-        }
-      },
-      "color": {
-        "field": "nationality_name",
-        "type": "nominal",
-        "legend": {
-          "title": "País"
-        }
-      },
-      "tooltip": [
-        {
-          "field": "nationality_name",
-          "type": "nominal",
-          "title": "País"
-        },
-        {
-          "field": "mean_overall",
-          "type": "quantitative",
-          "title": "Média do Overall",
-          "format": ".1f"
-        }
-      ]
-    },
     "title": {
-      "text": "Paises com Maior Média de Overall",
-      "anchor": "start",
-      "fontSize": 16
+      "text": "Distribuição de Altura e Peso Médio dos Jogadores por País",
+      "fontSize": 16,
+      "fontWeight": "bold",
+      "anchor": "start"
+    },
+    "config": {
+      "view": {
+        "stroke": null
+      }
     }
   }
   

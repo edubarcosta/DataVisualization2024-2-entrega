@@ -1,0 +1,44 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Distribuição de idades dos jogadores por países da América do Sul",
+    "width": 450, 
+    "height": 250,
+    "data": {
+      "url": "players_22.csv",
+      "format": {"type": "csv"}
+    },
+    "transform": [
+      {
+        "filter": "datum.age > 0 && datum.nationality_name != ''"
+      },
+      {
+        "filter": "datum.nationality_name == 'Argentina' || datum.nationality_name == 'Brazil' || datum.nationality_name == 'Chile' || datum.nationality_name == 'Colombia' || datum.nationality_name == 'Uruguay' || datum.nationality_name == 'Peru' || datum.nationality_name == 'Paraguay' || datum.nationality_name == 'Venezuela' || datum.nationality_name == 'Ecuador' || datum.nationality_name == 'Bolivia'"
+      }
+    ],
+    "mark": {
+      "type": "boxplot",
+      "extent": "min-max"
+    },
+    "encoding": {
+      "x": {
+        "field": "nationality_name",
+        "type": "nominal",
+        "title": "País",
+        "axis": {"labelAngle": -45},
+        "sort": "-y"
+      },
+      "color": {
+        "field": "nationality_name",
+        "type": "nominal",
+        "legend": null
+      },
+      "y": {
+        "field": "age",
+        "type": "quantitative",
+        "title": "Idade dos Jogadores",
+        "scale": {"zero": false}
+      }
+    },
+    "title": "Distribuição de Idades dos Jogadores - América do Sul"
+  }
+  

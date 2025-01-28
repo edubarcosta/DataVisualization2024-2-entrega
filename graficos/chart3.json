@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Mapa de Calor das 15 Ligas com Maior Média de Overall",
-  "width": 300,
+  "width": 350, 
   "height": 300,
   "data": {
     "url": "players_22.csv",

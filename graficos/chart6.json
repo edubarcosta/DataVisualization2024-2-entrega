@@ -14,16 +14,20 @@
         "filter": "datum.overall > 0"
       },
       {
+        "aggregate": [
+          {
+            "op": "mean",
+            "field": "overall",
+            "as": "mean_overall"
+          }
+        ],
+        "groupby": ["nationality_name"]
+      },
+      {
         "window": [
           {
             "op": "rank",
             "as": "rank"
-          }
-        ],
-        "sort": [
-          {
-            "field": "overall",
-            "order": "descending"
           }
         ]
       },
@@ -34,19 +38,20 @@
     "mark": "bar",
     "encoding": {
       "x": {
-        "field": "overall",
+        "field": "mean_overall",
         "type": "quantitative",
-        "title": "Overall",
+        "title": "Média do Overall",
         "axis": {
           "format": ".1f"
         }
       },
       "y": {
-        "field": "short_name",
+        "field": "nationality_name",
         "type": "nominal",
-        "title": "Jogador",
+        "title": "País",
         "sort": {
-          "field": "overall",
+          "field": "mean_overall",
+          "op": "mean",
           "order": "descending"
         },
         "axis": {
@@ -54,28 +59,28 @@
         }
       },
       "color": {
-        "field": "short_name",
+        "field": "nationality_name",
         "type": "nominal",
         "legend": {
-          "title": "Jogador"
+          "title": "País"
         }
       },
       "tooltip": [
         {
-          "field": "short_name",
+          "field": "nationality_name",
           "type": "nominal",
-          "title": "Jogador"
+          "title": "País"
         },
         {
-          "field": "overall",
+          "field": "mean_overall",
           "type": "quantitative",
-          "title": "Overall",
+          "title": "Média do Overall",
           "format": ".1f"
         }
       ]
     },
     "title": {
-      "text": "Jogadores com Maior Overall",
+      "text": "Paises com Maior Média de Overall",
       "anchor": "start",
       "fontSize": 16
     }
