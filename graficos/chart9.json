@@ -1,92 +1,171 @@
-  {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "data": {
-      "url": "players_22.csv"
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Valor de Mercado dos Jogadores",
+  "data": {
+    "url": "players_22.csv"
+  },
+  "width": 900,
+  "height": 300,
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "field": "age",
+      "type": "quantitative",
+      "title": "Idade",
+      "scale": {
+        "domain": [
+          16,
+          40
+        ]
+      }
     },
-    "width": 900,
-    "height": 300,
-    "mark": "circle",
-    "encoding": {
-      "x": {
-        "field": "age",
-        "type": "quantitative",
-        "title": "Idade",
-        "scale": {"domain": [16, 40]}
+    "y": {
+      "field": "overall",
+      "type": "quantitative",
+      "title": "Overall",
+      "scale": {
+        "domain": [
+          53,
+          95
+        ]
+      }
+    },
+    "size": {
+      "field": "value_eur",
+      "type": "quantitative",
+      "title": "Valor (€)",
+      "scale": {
+        "domain": [
+          1000000,
+          150000000
+        ],
+        "range": [
+          70,
+          1000
+        ]
+      }
+    },
+    "color": {
+      "field": "club_name",
+      "type": "nominal",
+      "title": "Clube",
+      "legend": {
+        "orient": "top",
+        "columns": 2
+      }
+    },
+    "tooltip": [
+      {
+        "field": "short_name",
+        "title": "Nome"
       },
-      "y": {
-        "field": "overall",
-        "type": "quantitative",
-        "title": "Overall",
-        "scale": {"domain": [53, 95]}
-      },
-      "size": {
-        "field": "value_eur",
-        "type": "quantitative",
-        "title": "Valor (€)",
-        "scale": {
-          "domain": [1000000, 150000000], 
-          "range": [70, 1000] 
-        }
-      },
-      "color": {
+      {
         "field": "club_name",
-        "type": "nominal",
-        "title": "Clube",
-        "legend": {"orient": "top", "columns": 2}
+        "title": "Clube"
       },
-      "tooltip": [
-        {"field": "short_name", "title": "Nome"},
-        {"field": "club_name", "title": "Clube"},
-        {"field": "club_position", "title": "Posições"},
-        {"field": "value_eur", "title": "Valor (€)", "format": ","},
-        {"field": "wage_eur", "title": "Salário (€)", "format": ","},
-        {"field": "pace", "title": "Pace"},
-        {"field": "shooting", "title": "Shooting"}
-      ]
-    },
-    "params": [
       {
-        "name": "PositionSelection",
-        "select": {
-          "type": "point",
-          "fields": ["club_position"]
-        },
-        "bind": {
-          "input": "select",
-          "options": [
-            null,
-            "SUB", "LCB", "LW", "RW", "CDM", "RW", "RDM", "RS", "LCM", "ST", "RCB", "CAM", "RB", "LB", "CDM", "CF", "CB", "GK"
-          ],
-          "name": "Posição: "
-        }
+        "field": "main_position",
+        "title": "Posições"
+      },
+      {
+        "field": "value_eur",
+        "title": "Valor (€)",
+        "format": ","
+      },
+      {
+        "field": "wage_eur",
+        "title": "Salário (€)",
+        "format": ","
+      },
+      {
+        "field": "pace",
+        "title": "Pace"
+      },
+      {
+        "field": "shooting",
+        "title": "Shooting"
       }
-    ],
-    "transform": [
-      {
-        "filter": {
-          "field": "league_name",
-          "oneOf": [
-              "Spain Primera Division"
-          ]
-        }
+    ]
+  },
+  "params": [
+    {
+      "name": "PositionSelection",
+      "select": {
+        "type": "point",
+        "fields": [
+          "main_position"
+        ]
       },
-      {
-        "filter": {
-          "field": "club_position",
-          "oneOf": ["SUB", "LCB", "LW", "RW", "CDM", "RW", "RDM", "RS", "LCM", "ST", "RCB", "CAM", "RB", "LB", "CDM", "CF", "CB", "GK"]
-        }
-      },
-      {
-        "filter": {
-          "param": "PositionSelection"
-        }
-      }
-    ],
-    "title": {
-        "text": "Valor de Mercado dos Jogadores por Posição (La Liga)",
-        "fontSize": 16,
-        "anchor": "start"
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "LCB",
+          "LW",
+          "RW",
+          "CDM",
+          "RW",
+          "RDM",
+          "RS",
+          "LCM",
+          "ST",
+          "RCB",
+          "CAM",
+          "RB",
+          "LB",
+          "CDM",
+          "CF",
+          "CB",
+          "GK"
+        ],
+        "name": "Posição: "
       }
     }
-  
-  
+  ],
+  "transform": [
+    {
+      "calculate": "split(datum.player_positions, ',')[0]",
+      "as": "main_position"
+    },
+    {
+      "filter": {
+        "field": "league_name",
+        "oneOf": [
+          "Spain Primera Division"
+        ]
+      }
+    },
+    {
+      "filter": {
+        "field": "main_position",
+        "oneOf": [
+          "CAM",
+          "CB",
+          "CDM",
+          "CF",
+          "CM",
+          "LB",
+          "LM",
+          "LW",
+          "LWB",
+          "RB",
+          "RM",
+          "RW",
+          "RWB",
+          "ST",
+          "GK"
+        ]
+      }
+    },
+    {
+      "filter": {
+        "param": "PositionSelection"
+      }
+    }
+  ],
+  "title": {
+    "text": "Valor de Mercado dos Jogadores por Posição (La Liga)",
+    "fontSize": 16,
+    "anchor": "start"
+  }
+}

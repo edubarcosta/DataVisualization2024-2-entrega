@@ -1,0 +1,84 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Gráfico de barras mostrando a média de drible por pé dominante com informações sobre idade e jogador.",
+  "width": 300,
+  "height": 300,
+  "data": {
+    "url": "players_22.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {
+          "op": "mean",
+          "field": "dribbling",
+          "as": "avg_dribbling"
+        }
+      ],
+      "groupby": [
+        "preferred_foot"
+      ]
+    },
+    {
+      "calculate": "datum.avg_dribbling - 62",
+      "as": "adjusted_avg_dribbling"
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "preferred_foot",
+      "type": "nominal",
+      "title": "Pé Dominante",
+      "sort": [
+        "Right",
+        "Left"
+      ]
+    },
+    "y": {
+      "field": "adjusted_avg_dribbling",
+      "type": "quantitative",
+      "title": "Média de Drible",
+      "scale": {
+        "domain": [
+          0,
+          2
+        ],
+        "zero": true
+      },
+      "axis": {
+        "format": ".2f",
+        "grid": true,
+        "labelExpr": "datum.value + 62"
+      }
+    },
+    "color": {
+      "field": "preferred_foot",
+      "type": "nominal",
+      "legend": {
+        "title": "Pé Dominante"
+      }
+    },
+    "tooltip": [
+      {
+        "field": "preferred_foot",
+        "type": "nominal",
+        "title": "Pé Dominante"
+      },
+      {
+        "field": "avg_dribbling",
+        "type": "quantitative",
+        "title": "Média de Drible",
+        "format": ".2f"
+      }
+    ]
+  },
+  "title": {
+    "text": "Média de Drible por Pé Dominante",
+    "anchor": "start",
+    "fontSize": 16
+  }
+}

@@ -1,104 +1,153 @@
 {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "data": {
-      "url": "players_22.csv",
-      "format": {"type": "csv"}
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Distribuição de Altura e Precisão de Cabeceio",
+  "data": {
+    "url": "players_22.csv",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {
+          "op": "mean",
+          "field": "height_cm",
+          "as": "mean_height"
+        },
+        {
+          "op": "mean",
+          "field": "attacking_heading_accuracy",
+          "as": "mean_heading"
+        }
+      ],
+      "groupby": [
+        "nationality_name"
+      ]
     },
-    "transform": [
-      {
-        "aggregate": [
-          {"op": "mean", "field": "height_cm", "as": "mean_height"},
-          {"op": "mean", "field": "weight_kg", "as": "mean_weight"}
-        ],
-        "groupby": ["nationality_name"]
-      },
-      {"filter": "datum.mean_height > 0 && datum.mean_weight > 0"},
-      {
-        "window": [
-          {"op": "rank", "as": "rank", "field": "mean_height"}
-        ],
-        "sort": [{"field": "mean_height", "order": "descending"}]
-      },
-      {"filter": "datum.rank <= 15"}
-    ],
-    "hconcat": [
-      {
-        "mark": "bar",
-        "encoding": {
-          "x": {
+    {
+      "filter": "datum.mean_height > 0 && datum.mean_heading > 0"
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank",
+          "field": "mean_height"
+        }
+      ],
+      "sort": [
+        {
+          "field": "mean_height",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "filter": "datum.rank <= 15"
+    }
+  ],
+  "hconcat": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "nationality_name",
+          "type": "nominal",
+          "sort": "-y",
+          "axis": {
+            "title": "País"
+          }
+        },
+        "y": {
+          "field": "mean_height",
+          "type": "quantitative",
+          "title": "Altura Média (cm)"
+        },
+        "color": {
+          "field": "mean_height",
+          "type": "quantitative",
+          "legend": {
+            "title": "Altura Média"
+          }
+        },
+        "tooltip": [
+          {
             "field": "nationality_name",
             "type": "nominal",
-            "sort": "-y",
-            "axis": {"title": "País"}
+            "title": "País"
           },
-          "y": {
+          {
             "field": "mean_height",
             "type": "quantitative",
             "title": "Altura Média (cm)"
-          },
-          "color": {
-            "field": "mean_height",
-            "type": "quantitative",
-            "legend": {"title": "Altura Média"}
-          },
-          "tooltip": [
-            {"field": "nationality_name", "type": "nominal", "title": "País"},
-            {"field": "mean_height", "type": "quantitative", "title": "Altura Média (cm)"}
-          ]
-        },
-        "width": 425, 
-        "height": 250,
-        "title": {
-          "text": "Altura Média dos Jogadores por País",
-          "fontSize": 14,
-          "fontWeight": "bold",
-          "anchor": "start"
-        }
+          }
+        ]
       },
-      {
-        "mark": "bar",
-        "encoding": {
-          "x": {
+      "width": 425,
+      "height": 250,
+      "title": {
+        "text": "Altura Média dos Jogadores por País",
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "anchor": "start"
+      }
+    },
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "nationality_name",
+          "type": "nominal",
+          "sort": "-y",
+          "axis": {
+            "title": "País"
+          }
+        },
+        "y": {
+          "field": "mean_heading",
+          "type": "quantitative",
+          "title": "Precisão no Cabeceio"
+        },
+        "color": {
+          "field": "mean_heading",
+          "type": "quantitative",
+          "legend": {
+            "title": "Precisão no Cabeceio"
+          }
+        },
+        "tooltip": [
+          {
             "field": "nationality_name",
             "type": "nominal",
-            "sort": "-y",
-            "axis": {"title": "País"}
+            "title": "País"
           },
-          "y": {
-            "field": "mean_weight",
+          {
+            "field": "mean_heading",
             "type": "quantitative",
-            "title": "Peso Médio (kg)"
-          },
-          "color": {
-            "field": "mean_weight",
-            "type": "quantitative",
-            "legend": {"title": "Peso Médio"}
-          },
-          "tooltip": [
-            {"field": "nationality_name", "type": "nominal", "title": "País"},
-            {"field": "mean_weight", "type": "quantitative", "title": "Peso Médio (kg)"}
-          ]
-        },
-        "width": 425,
-        "height": 250,
-        "title": {
-          "text": "Peso Médio dos Jogadores por País",
-          "fontSize": 14,
-          "fontWeight": "bold",
-          "anchor": "start"
-        }
-      }
-    ],
-    "title": {
-      "text": "Distribuição de Altura e Peso Médio dos Jogadores por País",
-      "fontSize": 16,
-      "fontWeight": "bold",
-      "anchor": "start"
-    },
-    "config": {
-      "view": {
-        "stroke": null
+            "title": "Precisão no Cabeceio"
+          }
+        ]
+      },
+      "width": 425,
+      "height": 250,
+      "title": {
+        "text": "Precisão no Cabeceio Médio de Jogadores por País",
+        "fontSize": 14,
+        "fontWeight": "bold",
+        "anchor": "start"
       }
     }
+  ],
+  "title": {
+    "text": "Distribuição de Altura e Precisão no Cabeceio dos Jogadores por País",
+    "fontSize": 16,
+    "fontWeight": "bold",
+    "anchor": "start"
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
   }
-  
+}

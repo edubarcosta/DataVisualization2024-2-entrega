@@ -1,50 +1,85 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Gráfico de barras mostrando as 5 posições com maior média de overall.",
-  "width": 400, 
+  "description": "Gráfico de barras mostrando as 8 posições com maior média de overall.",
+  "width": 400,
   "height": 250,
   "data": {
     "url": "players_22.csv",
-    "format": {"type": "csv"}
+    "format": {
+      "type": "csv"
+    }
   },
   "transform": [
     {
+      "calculate": "split(datum.player_positions, ',')[0]",
+      "as": "main_position"
+    },
+    {
       "aggregate": [
-        {"op": "mean", "field": "overall", "as": "avg_overall"}
+        {
+          "op": "mean",
+          "field": "overall",
+          "as": "avg_overall"
+        }
       ],
-      "groupby": ["club_position"]
+      "groupby": [
+        "main_position"
+      ]
     },
     {
       "window": [
-        {"op": "rank", "as": "rank"}
+        {
+          "op": "rank",
+          "as": "rank"
+        }
       ],
-      "sort": [{"field": "avg_overall", "order": "descending"}]
+      "sort": [
+        {
+          "field": "avg_overall",
+          "order": "descending"
+        }
+      ]
     },
     {
       "filter": "datum.rank <= 8"
+    },
+    {
+      "calculate": "datum.avg_overall - 64",
+      "as": "adjusted_value"
     }
   ],
   "mark": "bar",
   "encoding": {
     "x": {
-      "field": "club_position",
+      "field": "main_position",
       "type": "nominal",
       "title": "Posição",
       "sort": "-y"
     },
     "y": {
-      "field": "avg_overall",
+      "field": "adjusted_value",
       "type": "quantitative",
-      "title": "Média de Overall"
+      "title": "Média de Overall",
+      "scale": {
+        "domain": [
+          0,
+          6
+        ],
+        "zero": true
+      },
+      "axis": {
+        "grid": true,
+        "labelExpr": "datum.value + 64"
+      }
     },
     "color": {
-      "field": "club_position",
+      "field": "main_position",
       "type": "nominal",
       "legend": null
     },
     "tooltip": [
       {
-        "field": "club_position",
+        "field": "main_position",
         "type": "nominal",
         "title": "Posição"
       },

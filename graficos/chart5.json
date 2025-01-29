@@ -1,89 +1,90 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Relação entre Valor de Mercado e Overall dos Jogadores",
-  "width": 750,
-  "height": 250,
-  "data": {
-    "url": "players_22.csv",
-    "format": {
-      "type": "csv"
-    }
-  },
-  "transform": [
-    {
-      "filter": "datum.value_eur > 0 && datum.overall > 0 && datum.league_name == 'English Premier League'"
-    }
-  ],
-  "mark": "point",
-  "encoding": {
-    "x": {
-      "field": "value_eur",
-      "type": "quantitative",
-      "title": "Valor de Mercado (EUR)",
-      "axis": {
-        "format": ".2s",
-        "tickCount": 10,
-        "grid": true
-      },
-      "scale": {
-        "type": "log",
-        "domain": [
-          50000,
-          150000000
-        ]
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Relação entre Valor de Mercado e Overall dos Jogadores",
+    "width": 750,
+    "height": 250,
+    "data": {
+      "url": "players_22.csv",
+      "format": {
+        "type": "csv"
       }
     },
-    "y": {
-      "field": "overall",
-      "type": "quantitative",
-      "title": "Overall do Jogador"
-    },
-    "size": {
-      "field": "age",
-      "type": "quantitative",
-      "legend": {
-        "title": "Idade"
-      }
-    },
-    "color": {
-      "field": "club_name",
-      "type": "nominal",
-      "legend": {
-        "title": "Times"
-      }
-    },
-    "tooltip": [
+    "transform": [
       {
-        "field": "short_name",
-        "type": "nominal",
-        "title": "Nome do Jogador"
-      },
-      {
+        "filter": "datum.value_eur > 0 && datum.overall > 0 && (datum.club_name == 'Real Madrid CF' || datum.club_name == 'FC Barcelona')"
+      }
+    ],
+    "mark": "point",
+    "encoding": {
+      "x": {
         "field": "value_eur",
         "type": "quantitative",
-        "title": "Valor de Mercado",
-        "format": ".2s"
+        "title": "Valor de Mercado (EUR)",
+        "axis": {
+          "format": ".2s",
+          "tickCount": 10,
+          "grid": true
+        },
+        "scale": {
+          "type": "log",
+          "domain": [400000, 150000000]
+        }
       },
-      {
+      "y": {
         "field": "overall",
         "type": "quantitative",
-        "title": "Overall"
+        "title": "Overall do Jogador",
+        "scale": {
+            "type": "log",
+            "domain": [50, 95]
+          }
       },
-      {
-        "field": "club_name",
-        "type": "nominal",
-        "title": "Clube"
-      },
-      {
+      "size": {
         "field": "age",
         "type": "quantitative",
-        "title": "Idade"
-      }
-    ]
-  },
-  "title": {
-    "text": "Relação entre Valor de Mercado e Overall dos Jogadores (Premier League)",
-    "fontSize": 16,
-    "anchor": "start"
+        "legend": {
+          "title": "Idade"
+        },
+        "scale": {
+          "domain": [17, 39],
+          "range": [50, 500]
+        }
+      },
+      "color": {
+        "field": "club_name",
+        "type": "nominal",
+        "legend": {
+          "title": "Times"
+        }
+      },
+      "tooltip": [
+        {
+          "field": "short_name",
+          "type": "nominal",
+          "title": "Nome do Jogador"
+        },
+        {
+          "field": "value_eur",
+          "type": "quantitative",
+          "title": "Valor de Mercado",
+          "format": ".2s"
+        },
+        {
+          "field": "overall",
+          "type": "quantitative",
+          "title": "Overall"
+        },
+        {
+          "field": "age",
+          "type": "quantitative",
+          "title": "Idade"
+        }
+      ]
+    },
+    "title": {
+      "text": "Relação entre Valor de Mercado, Overall e Idade dos Jogadores do Real Madrid e Barcelona",
+      "fontSize": 16,
+      "anchor": "start"
+    }
   }
-}
+  

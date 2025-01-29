@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Mapa de Calor das 15 Ligas com Maior Média de Overall",
-  "width": 350, 
+  "width": 350,
   "height": 300,
   "data": {
     "url": "players_22.csv",
@@ -21,7 +21,9 @@
           "as": "mean_overall"
         }
       ],
-      "groupby": ["league_name"]
+      "groupby": [
+        "league_name"
+      ]
     },
     {
       "window": [
@@ -33,14 +35,29 @@
     },
     {
       "filter": "datum.rank <= 15"
+    },
+    {
+      "calculate": "datum.mean_overall - 58",
+      "as": "adjusted_mean_overall"
     }
   ],
   "mark": "rect",
   "encoding": {
     "x": {
-      "field": "mean_overall",
+      "field": "adjusted_mean_overall",
       "type": "quantitative",
-      "title": "Média de Overall"
+      "title": "Média de Overall",
+      "scale": {
+        "domain": [
+          0,
+          17
+        ],
+        "zero": true
+      },
+      "axis": {
+        "grid": true,
+        "labelExpr": "datum.value + 58"
+      }
     },
     "y": {
       "field": "league_name",
