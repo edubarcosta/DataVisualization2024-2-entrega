@@ -1,0 +1,81 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "Média de Overall por Idade nas Ligas de Futebol",
+    "width": 380, 
+    "height": 310,
+    "data": {
+      "url": "players_22.csv"
+    },
+    "transform": [
+      {
+        "filter": {
+          "field": "league_name",
+          "oneOf": ["Spain Primera Division", "French Ligue 1", "English Premier League", "Italian Serie A"]
+        }
+      },
+      {
+        "aggregate": [
+          {"op": "mean", "field": "overall", "as": "avg_overall"},
+          {"op": "mean", "field": "age", "as": "avg_age"}
+        ],
+        "groupby": ["league_name", "age"]
+      }
+    ],
+    "encoding": {
+      "x": {
+        "field": "age",
+        "type": "quantitative",
+        "title": "Idade",
+        "scale": {"domain": [16, 40]}
+      },
+      "y": {
+        "field": "avg_overall",
+        "type": "quantitative",
+        "title": "Média de Overall",
+        "scale": {"domain": [50, 88]}  
+      },
+      "color": {
+        "field": "league_name",
+        "type": "nominal",
+        "legend": {"title": "Liga"}
+      },
+      "tooltip": [
+        {"field": "league_name", "title": "Liga"},
+        {"field": "age", "title": "Idade", "format": ".0f"},
+        {"field": "avg_overall", "title": "Média de Overall", "format": ".2f"}
+      ]
+    },
+    "layer": [
+      {
+        "mark": "line"
+      },
+      {
+        "params": [
+          {
+            "name": "hover",
+            "select": {"type": "point", "on": "pointerover", "clear": "pointerout"}
+          }
+        ],
+        "mark": {
+          "type": "circle",
+          "tooltip": true
+        },
+        "encoding": {
+          "opacity": {
+            "condition": {"test": {"param": "hover", "empty": false}, "value": 1},
+            "value": 0
+          },
+          "size": {
+            "condition": {"test": {"param": "hover", "empty": false}, "value": 48},
+            "value": 100
+          }
+        }
+      }
+    ],
+    "title": {
+      "text": "Média de Overall por Idade nas Ligas de Futebol",
+      "fontSize": 16,
+      "anchor": "start"
+    }
+  }
+  

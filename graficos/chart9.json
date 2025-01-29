@@ -1,4 +1,4 @@
-  {
+{
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "data": {
       "url": "players_22.csv"
@@ -37,7 +37,7 @@
       "tooltip": [
         {"field": "short_name", "title": "Nome"},
         {"field": "club_name", "title": "Clube"},
-        {"field": "club_position", "title": "Posições"},
+        {"field": "player_positions", "title": "Posições"},
         {"field": "value_eur", "title": "Valor (€)", "format": ","},
         {"field": "wage_eur", "title": "Salário (€)", "format": ","},
         {"field": "pace", "title": "Pace"},
@@ -49,7 +49,7 @@
         "name": "PositionSelection",
         "select": {
           "type": "point",
-          "fields": ["club_position"]
+          "fields": ["main_position"]
         },
         "bind": {
           "input": "select",
@@ -63,17 +63,21 @@
     ],
     "transform": [
       {
+        "calculate": "split(datum.player_positions, ',')[0]",
+        "as": "main_position"
+      },
+      {
         "filter": {
           "field": "league_name",
           "oneOf": [
-              "Spain Primera Division"
+            "Spain Primera Division"
           ]
         }
       },
       {
         "filter": {
-          "field": "club_position",
-          "oneOf": ["SUB", "LCB", "LW", "RW", "CDM", "RW", "RDM", "RS", "LCM", "ST", "RCB", "CAM", "RB", "LB", "CDM", "CF", "CB", "GK"]
+          "field": "main_position",
+          "oneOf": ["CAM", "CB", "CDM", "CF", "CM", "LB", "LM", "LW", "LWB", "RB", "RM", "RW", "RWB", "ST", "GK"]
         }
       },
       {
@@ -83,10 +87,9 @@
       }
     ],
     "title": {
-        "text": "Valor de Mercado dos Jogadores por Posição (La Liga)",
-        "fontSize": 16,
-        "anchor": "start"
-      }
+      "text": "Valor de Mercado dos Jogadores por Posição (La Liga)",
+      "fontSize": 16,
+      "anchor": "start"
     }
-  
+  }
   
