@@ -45,6 +45,14 @@
     },
     {
       "filter": "datum.rank <= 15"
+    },
+    {
+      "calculate": "datum.mean_height - 184",
+      "as": "adjusted_height"
+    },
+    {
+      "calculate": "datum.mean_heading - 10",
+      "as": "adjusted_heading"
     }
   ],
   "hconcat": [
@@ -60,15 +68,30 @@
           }
         },
         "y": {
-          "field": "mean_height",
+          "field": "adjusted_height",
           "type": "quantitative",
-          "title": "Altura Média (cm)"
+          "title": "Altura Média (cm)",
+          "scale": {
+            "domain": [
+              0,
+              7
+            ],
+            "zero": true
+          },
+          "axis": {
+            "grid": true,
+            "labelExpr": "datum.value + 184"
+          }
         },
         "color": {
           "field": "mean_height",
           "type": "quantitative",
           "legend": {
-            "title": "Altura Média"
+            "title": "Altura Média (cm)",
+            "orient": "right"
+          },
+          "scale": {
+            "scheme": "blues"
           }
         },
         "tooltip": [
@@ -84,7 +107,7 @@
           }
         ]
       },
-      "width": 425,
+      "width": 400,
       "height": 250,
       "title": {
         "text": "Altura Média dos Jogadores por País",
@@ -105,15 +128,30 @@
           }
         },
         "y": {
-          "field": "mean_heading",
+          "field": "adjusted_heading",
           "type": "quantitative",
-          "title": "Precisão no Cabeceio"
+          "title": "Precisão no Cabeceio",
+          "scale": {
+            "domain": [
+              0,
+              60
+            ],
+            "zero": true
+          },
+          "axis": {
+            "grid": true,
+            "labelExpr": "datum.value + 10"
+          }
         },
         "color": {
           "field": "mean_heading",
           "type": "quantitative",
           "legend": {
-            "title": "Precisão no Cabeceio"
+            "title": "Precisão no Cabeceio",
+            "orient": "right"
+          },
+          "scale": {
+            "scheme": "reds"
           }
         },
         "tooltip": [
@@ -129,7 +167,7 @@
           }
         ]
       },
-      "width": 425,
+      "width": 400,
       "height": 250,
       "title": {
         "text": "Precisão no Cabeceio Médio de Jogadores por País",
@@ -139,6 +177,11 @@
       }
     }
   ],
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
   "title": {
     "text": "Distribuição de Altura e Precisão no Cabeceio dos Jogadores por País",
     "fontSize": 16,
